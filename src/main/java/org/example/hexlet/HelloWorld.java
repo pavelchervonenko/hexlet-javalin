@@ -25,6 +25,10 @@ public class HelloWorld {
 //            ctx.render("/courses/show.jte", model("page", page));
 //        });
 
+        app.get("/main-page", ctx -> {
+           ctx.render("menu.jte");
+        });
+
         app.get("/courses", ctx -> {
             var courses = List.of(new Course("lyalya", "topolya"));
             var header = "Курсы по программированию";
