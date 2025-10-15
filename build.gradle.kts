@@ -2,8 +2,7 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
-    id("java")
-    application
+    id("application")
 }
 
 application {
@@ -27,6 +26,7 @@ dependencies {
     implementation("gg.jte:jte:3.1.9")
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+    implementation("org.apache.commons:commons-text:1.14.0")
 
     // Lombok для основного кода
     compileOnly("org.projectlombok:lombok:1.18.34")
