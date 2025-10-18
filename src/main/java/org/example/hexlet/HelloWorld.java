@@ -4,9 +4,13 @@ import static io.javalin.rendering.template.TemplateUtil.model;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinJte;
 
+import io.javalin.validation.ValidationException;
 import org.apache.commons.text.StringEscapeUtils;
 
+import org.example.hexlet.dto.courses.BuildCoursePage;
 import org.example.hexlet.dto.courses.CoursesPage;
+
+import org.example.hexlet.dto.users.BuildUserPage;
 import org.example.hexlet.dto.users.UsersPage;
 
 import org.example.hexlet.repository.CourseRepository;
@@ -37,18 +41,27 @@ public class HelloWorld {
         });
 
         app.get("/users/build", ctx -> {
-            ctx.render("users/build.jte");
+            var page = new BuildUserPage();
+            ctx.render("users/build.jte", model("page", page));
         });
 
         app.post("/users", ctx -> {
            var name = ctx.formParam("name").trim();
            var email = ctx.formParam("email").trim().toLowerCase();
-           var password = ctx.formParam("password");
-           var passwordConfirmation = ctx.formParam("passwordConfirmation");
 
-           var user = new User(name, email, password);
-           UserRepository.save(user);
-           ctx.redirect("/users");
+           try {
+               var passwordConfirmation = ctx.formParam("passwordConfirmation");
+               var password = ctx.formParamAsClass("password", String.class)
+                       .check(value -> value.equals(passwordConfirmation), "Пароли не совпадают")
+                       .check(value -> value.length() > 6, "Длина пароля должна быть более 6 символов")
+                       .get();
+               var user = new User(name, email, password);
+               UserRepository.save(user);
+               ctx.redirect("/users");
+           } catch (ValidationException e) {
+               var page = new BuildUserPage(name, email, e.getErrors());
+               ctx.render("users/build.jte", model("page", page));
+           }
         });
 
         app.get("/users", ctx -> {
@@ -70,16 +83,28 @@ public class HelloWorld {
         });
 
         app.get("/courses/build", ctx -> {
-            ctx.render("courses/build.jte");
+            var page = new BuildCoursePage();
+            ctx.render("courses/build.jte", model("page", page));
         });
 
         app.post("/courses", ctx -> {
             var name = ctx.formParam("name").trim();
             var description = ctx.formParam("description").trim();
 
-            var course = new Course(name, description);
-            CourseRepository.save(course);
-            ctx.redirect("/courses");
+            try {
+                var validatedName = ctx.formParamAsClass("name", String.class)
+                        .check(value -> value.length() > 2, "Название курса должно быть более 2 символов")
+                        .get();
+                var validatedDescription = ctx.formParamAsClass("description", String.class)
+                        .check(value -> value.length() > 10, "Описание курса должно быть более 10 символов")
+                        .get();
+                var course = new Course(validatedName, validatedDescription);
+                CourseRepository.save(course);
+                ctx.redirect("/courses");
+            } catch (ValidationException e) {
+                var page = new BuildCoursePage(name, description, e.getErrors());
+                ctx.render("courses/build.jte", model("page", page));
+            }
         });
 
         app.get("/courses", ctx -> {
