@@ -40,12 +40,12 @@ public class HelloWorld {
            ctx.render("menu.jte");
         });
 
-        app.get("/users/build", ctx -> {
+        app.get(NamedRoutes.buildUserPath(), ctx -> {
             var page = new BuildUserPage();
             ctx.render("users/build.jte", model("page", page));
         });
 
-        app.post("/users", ctx -> {
+        app.post(NamedRoutes.usersPath(), ctx -> {
            var name = ctx.formParam("name").trim();
            var email = ctx.formParam("email").trim().toLowerCase();
 
@@ -57,14 +57,14 @@ public class HelloWorld {
                        .get();
                var user = new User(name, email, password);
                UserRepository.save(user);
-               ctx.redirect("/users");
+               ctx.redirect(NamedRoutes.usersPath());
            } catch (ValidationException e) {
                var page = new BuildUserPage(name, email, e.getErrors());
                ctx.render("users/build.jte", model("page", page));
            }
         });
 
-        app.get("/users", ctx -> {
+        app.get(NamedRoutes.usersPath(), ctx -> {
             List<User> users = UserRepository.getEntities();
             var page = new UsersPage(users);
             ctx.render("users/index.jte", model("page", page));
@@ -82,32 +82,34 @@ public class HelloWorld {
             ctx.result("userId " + userId + " postId " + postId);
         });
 
-        app.get("/courses/build", ctx -> {
+        app.get(NamedRoutes.buildCoursesPath(), ctx -> {
             var page = new BuildCoursePage();
             ctx.render("courses/build.jte", model("page", page));
         });
 
-        app.post("/courses", ctx -> {
-            var name = ctx.formParam("name").trim();
-            var description = ctx.formParam("description").trim();
+        app.post(NamedRoutes.coursesPath(), ctx -> {
+            var name = ctx.formParam("name");
+            var description = ctx.formParam("description");
 
             try {
                 var validatedName = ctx.formParamAsClass("name", String.class)
                         .check(value -> value.length() > 2, "Название курса должно быть более 2 символов")
-                        .get();
+                        .get()
+                        .trim();
                 var validatedDescription = ctx.formParamAsClass("description", String.class)
                         .check(value -> value.length() > 10, "Описание курса должно быть более 10 символов")
-                        .get();
+                        .get()
+                        .trim();
                 var course = new Course(validatedName, validatedDescription);
                 CourseRepository.save(course);
-                ctx.redirect("/courses");
+                ctx.redirect(NamedRoutes.coursesPath());
             } catch (ValidationException e) {
                 var page = new BuildCoursePage(name, description, e.getErrors());
                 ctx.render("courses/build.jte", model("page", page));
             }
         });
 
-        app.get("/courses", ctx -> {
+        app.get(NamedRoutes.coursesPath(), ctx -> {
             var term = ctx.queryParam("term");
 
             var courses = CourseRepository.getEntities();
