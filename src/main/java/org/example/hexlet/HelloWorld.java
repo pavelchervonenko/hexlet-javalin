@@ -34,9 +34,9 @@ public class HelloWorld {
 //                new Course("Java", "Backend"),
 //                new Course("PHP", "php developer"));
 
-        app.get("/", ctx -> ctx.render("index.jte"));
+        app.get(NamedRoutes.rootPath(), ctx -> ctx.render("index.jte"));
 
-        app.get("/main-page", ctx -> {
+        app.get(NamedRoutes.mainPagePath(), ctx -> {
            ctx.render("menu.jte");
         });
 
@@ -70,13 +70,13 @@ public class HelloWorld {
             ctx.render("users/index.jte", model("page", page));
         });
 
-        app.get("/users/{id}", ctx -> {
+        app.get(NamedRoutes.userPathTpl(), ctx -> {
             var userId = ctx.pathParam("id");
             var escapedUserId = StringEscapeUtils.escapeHtml4(userId);
-            ctx.html(escapedUserId);
+            ctx.html("userId: " + escapedUserId);
         });
 
-        app.get("/users/{id}/post/{postId}", ctx -> {
+        app.get(NamedRoutes.userPostPathTpl(), ctx -> {
             var userId = ctx.pathParamAsClass("id", Long.class).get();
             var postId = ctx.pathParamAsClass("postId", Long.class).get();
             ctx.result("userId " + userId + " postId " + postId);

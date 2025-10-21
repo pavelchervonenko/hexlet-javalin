@@ -11,7 +11,7 @@
     <body>
         <h1>${page.getHeader()}</h1>
 
-        <form action="/courses" method="get">
+        <form action="${NamedRoutes.coursesPath()}" method="get">
           <input type="search" name="term" value="${page.getTerm()}" placeholder="Название или описание">
           <input type="submit" value="Искать">
         </form>
