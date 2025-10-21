@@ -16,12 +16,16 @@ public class NamedRoutes {
         return "/users";
     }
 
+    public static String userPathTpl() {
+        return "/users/{id}";
+    }
+
     public static String buildUserPath() {
         return "/users/build";
     }
 
-    public static String userPathTpl() {
-        return "/users/{id}";
+    public static String editUserPath() {
+        return "/users/{id}/edit";
     }
 
     public static String userPostPathTpl() {
@@ -45,12 +49,16 @@ public class NamedRoutes {
         return "/courses";
     }
 
+    public static String coursePathTpl() {
+        return "/courses/{id}";
+    }
+
     public static String buildCoursesPath() {
         return "/courses/build";
     }
 
-    public static String coursePathTpl() {
-        return "/courses/{id}";
+    public static String editCoursePath() {
+        return "/courses/{id}/edit";
     }
 
     public static String coursePath(Long id) {

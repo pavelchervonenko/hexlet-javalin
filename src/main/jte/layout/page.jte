@@ -60,6 +60,7 @@
           <nav class="nav" role="navigation" aria-label="Main navigation">
             <a href="/main-page">Главная</a>
             <a href="/courses">Курсы</a>
+            <a href="/users">Пользователи</a>
           </nav>
         </header>
 
