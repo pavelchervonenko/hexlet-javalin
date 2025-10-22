@@ -1,3 +1,6 @@
+@import org.example.hexlet.dto.MainPage
+@param MainPage page
+
 <!doctype html>
 <html lang="en">
     <head>
@@ -9,6 +12,9 @@
     <div class="col-lg-8 mx-auto p-4 py-md-5">
         <main>
         <h1 class="text-body-emphasis">Привет, Хекслет!</h1>
+        @if(!page.isVisited())
+            Это сообщение показывается только один раз. Если вы хотите увидеть его снова, сотрите куки
+        @endif
         </main>
     </div>
     </body>

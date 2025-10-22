@@ -1,28 +1,16 @@
 package org.example.hexlet;
 
-import static io.javalin.rendering.template.TemplateUtil.model;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinJte;
 
-import io.javalin.validation.ValidationException;
-import org.apache.commons.text.StringEscapeUtils;
 
 import org.example.hexlet.controller.CoursesController;
-import org.example.hexlet.dto.courses.BuildCoursePage;
-import org.example.hexlet.dto.courses.CoursesPage;
-
-import org.example.hexlet.dto.users.BuildUserPage;
-import org.example.hexlet.dto.users.UsersPage;
-
-import org.example.hexlet.repository.CourseRepository;
-import org.example.hexlet.repository.UserRepository;
-
 import org.example.hexlet.controller.UsersController;
+import org.example.hexlet.dto.MainPage;
 
-import org.example.hexlet.model.User;
-import org.example.hexlet.model.Course;
+import java.time.LocalDateTime;
 
-import java.util.List;
+import static io.javalin.rendering.template.TemplateUtil.model;
 
 public class HelloWorld {
     public static void main(String[] args) {
@@ -31,8 +19,24 @@ public class HelloWorld {
             config.fileRenderer(new JavalinJte());
         });
 
+        // --Middlewares--
+        app.before(ctx -> {
+           System.out.println("Запрос получен: " + LocalDateTime.now() + " | " + ctx.method() + " " + ctx.path());
+        });
+
+        app.after(ctx -> {
+           System.out.println("Запрос обработан: " + LocalDateTime.now() + " | " + ctx.method() + " " + ctx.path());
+        });
+
+
         // -- Общие страницы --
-        app.get(NamedRoutes.rootPath(), ctx -> ctx.render("index.jte"));
+        app.get(NamedRoutes.rootPath(), ctx -> {
+            var visited = Boolean.valueOf(ctx.cookie("visited"));
+            var page = new MainPage(visited);
+            ctx.render("index.jte", model("page", page));
+            ctx.cookie("visited", String.valueOf(true));
+        });
+
         app.get(NamedRoutes.mainPagePath(), ctx -> ctx.render("menu.jte"));
 
         // -- Пользователи --
