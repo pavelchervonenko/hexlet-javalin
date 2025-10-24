@@ -11,6 +11,15 @@ public class NamedRoutes {
         return "/main-page";
     }
 
+    // Сессии
+    public static String sessionsPath() {
+        return "/sessions";
+    }
+
+    public static String buildSessionsPath() {
+        return "/sessions/build";
+    }
+
     // Пользователи
     public static String usersPath() {
         return "/users";

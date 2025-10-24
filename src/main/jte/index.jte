@@ -9,13 +9,14 @@
     <title>Hello Hexlet!</title>
     </head>
     <body>
-    <div class="col-lg-8 mx-auto p-4 py-md-5">
-        <main>
-        <h1 class="text-body-emphasis">Привет, Хекслет!</h1>
-        @if(!page.isVisited())
-            Это сообщение показывается только один раз. Если вы хотите увидеть его снова, сотрите куки
-        @endif
-        </main>
-    </div>
+        <div class="col-lg-8 mx-auto p-4 py-md-5">
+            <main>
+                  <h1>Привет, Хекслет!</h1>
+                  @if(page.getCurrentUser() != null)
+                    Добро пожаловать, ${page.getCurrentUser()}.
+                    Чтобы разлогиниться, удалите куку JSESSIONID из браузера
+                  @endif
+            </main>
+        </div>
     </body>
 </html>

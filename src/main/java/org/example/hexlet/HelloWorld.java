@@ -5,6 +5,7 @@ import io.javalin.rendering.template.JavalinJte;
 
 
 import org.example.hexlet.controller.CoursesController;
+import org.example.hexlet.controller.SessionsController;
 import org.example.hexlet.controller.UsersController;
 import org.example.hexlet.dto.MainPage;
 
@@ -28,13 +29,15 @@ public class HelloWorld {
            System.out.println("Запрос обработан: " + LocalDateTime.now() + " | " + ctx.method() + " " + ctx.path());
         });
 
+        // -- Сессия --
+        app.get(NamedRoutes.buildSessionsPath(), SessionsController::build);
+        app.post(NamedRoutes.sessionsPath(), SessionsController::create);
+        app.delete(NamedRoutes.sessionsPath(), SessionsController::destroy);
 
         // -- Общие страницы --
         app.get(NamedRoutes.rootPath(), ctx -> {
-            var visited = Boolean.valueOf(ctx.cookie("visited"));
-            var page = new MainPage(visited);
+            var page = new MainPage(ctx.sessionAttribute("currentUser"));
             ctx.render("index.jte", model("page", page));
-            ctx.cookie("visited", String.valueOf(true));
         });
 
         app.get(NamedRoutes.mainPagePath(), ctx -> ctx.render("menu.jte"));

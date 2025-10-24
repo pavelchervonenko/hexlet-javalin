@@ -39,7 +39,7 @@ public class UsersController {
 
     public static void create(Context ctx) {
         var name = ctx.formParam("name").trim();
-           var email = ctx.formParam("email").trim().toLowerCase();
+        var email = ctx.formParam("email").trim().toLowerCase();
 
            try {
                var passwordConfirmation = ctx.formParam("passwordConfirmation");
