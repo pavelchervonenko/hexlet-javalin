@@ -17,9 +17,8 @@ repositories {
 }
 
 dependencies {
-    // Версии зависимостей могут отличаться
-    // Здесь мы сразу подключаем зависимости,
-    // которые понадобятся во время обучения
+    implementation("com.h2database:h2:2.4.240")
+    implementation("com.zaxxer:HikariCP:7.0.2")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.16.1")
     implementation("io.javalin:javalin:6.1.3")
     implementation("org.slf4j:slf4j-simple:2.0.7")
