@@ -21,6 +21,7 @@ public class UsersController {
     public static void index(Context ctx) {
         var users = UserRepository.getEntities();
         var page = new UsersPage(users);
+        page.setFlash(ctx.consumeSessionAttribute("flash"));
         ctx.render("users/index.jte", model("page", page));
     }
 
@@ -33,7 +34,7 @@ public class UsersController {
     }
 
     public static void build(Context ctx) {
-        var page = new BuildUserPage();
+        var page = new BuildUserPage("", "", null);
         ctx.render("users/build.jte", model("page", page));
     }
 
@@ -49,6 +50,7 @@ public class UsersController {
                        .get();
                var user = new User(name, email, password);
                UserRepository.save(user);
+               ctx.sessionAttribute("flash", "Пользователь успешно зарегистрирован");
                ctx.redirect(NamedRoutes.usersPath());
            } catch (ValidationException e) {
                var page = new BuildUserPage(name, email, e.getErrors());

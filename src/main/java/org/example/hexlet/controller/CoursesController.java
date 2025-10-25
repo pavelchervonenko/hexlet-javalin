@@ -45,6 +45,7 @@ public class CoursesController {
         }
 
         var page = new CoursesPage(filtered, header, term == null ? "" : term);
+        page.setFlash(ctx.consumeSessionAttribute("flash"));
         ctx.render("courses/index.jte", model("page", page));
     }
 

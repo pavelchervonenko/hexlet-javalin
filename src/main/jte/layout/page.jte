@@ -1,5 +1,8 @@
+@import org.example.hexlet.util.NamedRoutes
+@import org.example.hexlet.dto.BasePage
 @import gg.jte.Content
 @param Content content
+@param BasePage page = null
 
 <!doctype html>
 <html lang="en">
@@ -60,10 +63,13 @@
           <nav class="nav" role="navigation" aria-label="Main navigation">
             <a href="/main-page">Главная</a>
             <a href="/courses">Курсы</a>
-            <a href="/users">Пользователи</a>
+            <a href="/main-page">Главная</a>
           </nav>
         </header>
 
+        @if(page != null && page.getFlash() != null)
+            <p>${page.getFlash()}</p
+        @endif
         <main class="container">
             ${content}
         </main>
