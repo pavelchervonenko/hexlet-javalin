@@ -35,7 +35,7 @@ public class HelloWorld {
     public static Javalin getApp() throws IOException, SQLException {
         var hikariConfig = new HikariConfig();
         hikariConfig.setJdbcUrl("jdbc:h2:mem:hexlet_project;DB_CLOSE_DELAY=-1;");
-
+        //hikariConfig.setJdbcUrl(getDatabaseUrl());
         var dataSource = new HikariDataSource(hikariConfig);
 
         var url = HelloWorld.class.getClassLoader().getResourceAsStream("schema.sql");
