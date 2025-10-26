@@ -29,7 +29,7 @@ public class HelloWorld {
     public static void main(String[] args) throws IOException, SQLException {
         var app = getApp();
 
-        app.start(70707);
+        app.start(7070);
     }
 
     public static Javalin getApp() throws IOException, SQLException {
